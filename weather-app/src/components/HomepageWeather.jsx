@@ -1,17 +1,19 @@
 import React from 'react'
 import CurrentWeather from './CurrentWeather';
 import ForecastWeather from './ForecastWeather';
+import WeatherLoadedBlock from './WeatherBlock/WeatherBlock';
+import SearchLogoBlock from './SeachLogo/SearchLogoBlock';
+ 
 
 function HomepageWeather() {
 
     const [city, setCity] = React.useState("");
     const [newCity, setNewCity] = React.useState(city);
     const [weatherData, setWeatherData] = React.useState('');
-    const [newWeatherData, setNewWeatherData] = React.useState({})
 
-    const onSetNewWeatherData = () => {
-        setNewWeatherData(weatherData)
-    }
+    const [loading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState('');
+
 
     const onChange = (e) => {
         setCity(e.target.value)
@@ -27,38 +29,71 @@ function HomepageWeather() {
 
 
 
+
+
     const API_KEY = '3f1b2782ee3a649ad85648d928019566';
 
-    const getWeather = (city) => {
-        fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ru&appid=${API_KEY}`)
+    const getWeather = async(city) => {
+        setLoading(true);
+        
+        await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ru&appid=${API_KEY}`)
             .then(response => {
-                return response.json();
+                if(!response.ok) {
+                    throw new Error('Request error',setError('Неверное написание или город остутсвует'))
+                } else {
+                    setError();
+                    return response.json();
+                    
+                }
             })
+
             // .then((data) => console.log(data))
             .then((data) => setWeatherData(data))
             .catch(err => {
                 console.error(err);
             });
-
+            setLoading(false)
     }
+    
 
     const onHandleSetCity = (e) => {
         e.preventDefault();
         onSetNewCity(city);
         getWeather(city);
-        onSetNewWeatherData();
         setCity("");
     }
 
+    
+    
 
     React.useEffect(() => [
-        console.log(weatherData)
+        console.log(loading)
+    ],[loading])
+
+    React.useEffect(() => [
+        console.log(weatherData),
+        // console.log(newWeatherData)
     ],[weatherData])
 
+    React.useEffect(() => [
+        console.log(error)
+    ],[error])
+
+
     const weatherCity = weatherData.weather;
+    
+    // const ViewWeatherBlock = 
+    //     <CurrentWeather
+    //         city={weatherData.name}
+    //         country={weatherData.sys.country}
+    //         temp={weatherData.main.temp}
+    //         iconWeather={weatherData.weather ? weatherCity.map(obj => obj.icon) : ''}
+    //         weather={weatherData.weather ? weatherCity.map(obj => obj.description) : ''}
+    //         windSpeed={weatherData.wind.speed}
+    //         pressure={weatherData.main.pressure}
+    //     /> 
 
     return (
-        <div>
             <div className="wrapper"> 
                 <div className="search-bar"> 
                 <form id="search-city" onSubmit={onHandleSetCity}> 
@@ -71,18 +106,31 @@ function HomepageWeather() {
                         placeholder="Введите название..." 
                         autoFocus=""/> 
                 </form> 
-                </div>{
-                    weatherData ? <CurrentWeather
-                                    city={weatherData.name}
-                                    country={weatherData.sys.country}
-                                    temp={weatherData.main.temp}
-                                    iconWeather={weatherData.weather ? weatherCity.map(obj => obj.icon) : ''}
-                                    weather={weatherData.weather ? weatherCity.map(obj => obj.description) : ''}
-                                    windSpeed={weatherData.wind.speed}
-                                    pressure={weatherData.main.pressure}
-                                    /> : ''
+                </div>  {
+                   (typeof weatherData.name && weatherData.sys && weatherData.main && weatherData.weather && weatherData.wind !== "undefined") ? <CurrentWeather
+                            city={weatherData.name}
+                            country={weatherData.sys.country}
+                            temp={weatherData.main.temp}
+                            iconWeather={weatherData.weather ? weatherCity.map(obj => obj.icon) : ''}
+                            weather={weatherData.weather ? weatherCity.map(obj => obj.description) : ''}
+                            windSpeed={weatherData.wind.speed}
+                            pressure={weatherData.main.pressure}
+                />  : <SearchLogoBlock/>
                 }
-                    
+                
+                {/* {
+                   (typeof weatherData.name && weatherData.sys && weatherData.main && weatherData.weather && weatherData.wind !== "undefined") ? 
+                    <h3>{error}</h3>: 
+                    <CurrentWeather
+                        city={weatherData.name}
+                        country={weatherData.sys.country}
+                        temp={weatherData.main.temp}
+                        iconWeather={weatherData.weather ? weatherCity.map(obj => obj.icon) : ''}
+                        weather={weatherData.weather ? weatherCity.map(obj => obj.description) : ''}
+                        windSpeed={weatherData.wind.speed}
+                        pressure={weatherData.main.pressure}
+                    /> 
+                } */}
                     <ForecastWeather/> 
                 
                 {/* <div className="container">
@@ -141,7 +189,6 @@ function HomepageWeather() {
                 </div> 
                 </div>  */}
             </div>
-    </div>
     )
 }
 
