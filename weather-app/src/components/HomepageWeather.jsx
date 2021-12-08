@@ -1,139 +1,124 @@
-import React from 'react'
-import CurrentWeather from './CurrentWeather';
-import ForecastWeather from './ForecastWeather';
-import WeatherLoadedBlock from './WeatherBlock/WeatherBlock';
-import SearchLogoBlock from './SeachLogo/SearchLogoBlock';
- 
+import React from "react";
+import CurrentWeather from "./CurrentWeather";
+import ForecastWeather from "./ForecastWeather";
+import WeatherLoadedBlock from "./WeatherBlock/WeatherBlock";
+import SearchLogoBlock from "./SeachLogo/SearchLogoBlock";
 
 function HomepageWeather() {
+  const [city, setCity] = React.useState("");
+  const [newCity, setNewCity] = React.useState(city);
+  const [weatherData, setWeatherData] = React.useState('');
 
-    const [city, setCity] = React.useState("");
-    const [newCity, setNewCity] = React.useState(city);
-    const [weatherData, setWeatherData] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
+  const [response, setResponse] = React.useState('')
 
-    const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState('');
+  const onChange = (e) => {
+    setCity(e.target.value);
+  };
 
-
-    const onChange = (e) => {
-        setCity(e.target.value)
+  const onSetNewCity = (city) => {
+    if (city) {
+      const newCity = city;
+      setNewCity(newCity);
+      console.log(newCity);
     }
+  };
 
-    const onSetNewCity = (city) => {
-        if(city) {
-            const newCity = city;
-            setNewCity(newCity)
-            console.log(newCity)
+  const API_KEY = "3f1b2782ee3a649ad85648d928019566";
+
+  const getWeather = async (city) => {
+    setLoading(true);
+
+    await fetch(
+      `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ru&appid=${API_KEY}`
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            "Request error",
+            setError("Неверное написание или город остутсвует, пожалуйста, попробуйте еще раз!"),
+            setResponse(response)
+          );
+        } else {
+          setError("");
+          return response.json();
         }
-    };
+      })
+      .then((data) => setWeatherData(data))
+      .catch((err) => {
+        console.error(err);
+      });
+    setLoading(false);
+  };
 
+  const onHandleSetCity = (e) => {
+    e.preventDefault();
+    onSetNewCity(city);
+    getWeather(city);
+    setCity("");
+  };
 
+  const weatherCity = weatherData.weather;
 
+  const ViewWeatherBlock = (
 
+    <CurrentWeather
+      city={weatherData ? weatherData.name : ""}
+      country={weatherData ? weatherData.sys.country : ""}
+      temp={weatherData ? weatherData.main.temp : ""}
+      iconWeather={
+        weatherData.weather ? weatherCity.map((obj) => obj.icon) : ""
+      }
+      weather={
+        weatherData.weather ? weatherCity.map((obj) => obj.description) : ""
+      }
+      windSpeed={weatherData ? weatherData.wind.speed : ""}
+      pressure={weatherData ? weatherData.main.pressure : ""}
+    />
+  );
 
-    const API_KEY = '3f1b2782ee3a649ad85648d928019566';
+  const errorMessage = <h3 className="error-message">{error}</h3>
 
-    const getWeather = async(city) => {
-        setLoading(true);
-        
-        await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ru&appid=${API_KEY}`)
-            .then(response => {
-                if(!response.ok) {
-                    throw new Error('Request error',setError('Неверное написание или город остутсвует'))
-                } else {
-                    setError();
-                    return response.json();
-                    
-                }
-            })
+  let messageForUser;
+  if (error) {
+    messageForUser = errorMessage;
+  } else if (loading) {
+    messageForUser = <WeatherLoadedBlock />;
+  } else {
+    messageForUser = ViewWeatherBlock;
+  }
 
-            // .then((data) => console.log(data))
-            .then((data) => setWeatherData(data))
-            .catch(err => {
-                console.error(err);
-            });
-            setLoading(false)
-    }
-    
+  React.useEffect(() => [
+    console.log(response),
 
-    const onHandleSetCity = (e) => {
-        e.preventDefault();
-        onSetNewCity(city);
-        getWeather(city);
-        setCity("");
-    }
+],[response])
 
-    
-    
+React.useEffect(() => [
+    console.log(weatherData)
+],[weatherData])
 
-    React.useEffect(() => [
-        console.log(loading)
-    ],[loading])
+  return (
+    <div className="wrapper">
+      <div className="search-bar">
+        <form id="search-city" onSubmit={onHandleSetCity}>
+          <input
+            value={city}
+            onChange={onChange}
+            type="text"
+            className="input-search"
+            name="city"
+            placeholder="Введите название..."
+            autoFocus=""
+          />
+        </form>
+      </div>
+      <div>
+          {(weatherData) ? (response.status === 404 ? errorMessage : messageForUser) : <SearchLogoBlock/>}
+      </div>
+      <ForecastWeather />
 
-    React.useEffect(() => [
-        console.log(weatherData),
-        // console.log(newWeatherData)
-    ],[weatherData])
-
-    React.useEffect(() => [
-        console.log(error)
-    ],[error])
-
-
-    const weatherCity = weatherData.weather;
-    
-    // const ViewWeatherBlock = 
-    //     <CurrentWeather
-    //         city={weatherData.name}
-    //         country={weatherData.sys.country}
-    //         temp={weatherData.main.temp}
-    //         iconWeather={weatherData.weather ? weatherCity.map(obj => obj.icon) : ''}
-    //         weather={weatherData.weather ? weatherCity.map(obj => obj.description) : ''}
-    //         windSpeed={weatherData.wind.speed}
-    //         pressure={weatherData.main.pressure}
-    //     /> 
-
-    return (
-            <div className="wrapper"> 
-                <div className="search-bar"> 
-                <form id="search-city" onSubmit={onHandleSetCity}> 
-                    <input 
-                        value={city}
-                        onChange={onChange}
-                        type="text" 
-                        className="input-search" 
-                        name="city" 
-                        placeholder="Введите название..." 
-                        autoFocus=""/> 
-                </form> 
-                </div>  {
-                   (typeof weatherData.name && weatherData.sys && weatherData.main && weatherData.weather && weatherData.wind !== "undefined") ? <CurrentWeather
-                            city={weatherData.name}
-                            country={weatherData.sys.country}
-                            temp={weatherData.main.temp}
-                            iconWeather={weatherData.weather ? weatherCity.map(obj => obj.icon) : ''}
-                            weather={weatherData.weather ? weatherCity.map(obj => obj.description) : ''}
-                            windSpeed={weatherData.wind.speed}
-                            pressure={weatherData.main.pressure}
-                />  : <SearchLogoBlock/>
-                }
-                
-                {/* {
-                   (typeof weatherData.name && weatherData.sys && weatherData.main && weatherData.weather && weatherData.wind !== "undefined") ? 
-                    <h3>{error}</h3>: 
-                    <CurrentWeather
-                        city={weatherData.name}
-                        country={weatherData.sys.country}
-                        temp={weatherData.main.temp}
-                        iconWeather={weatherData.weather ? weatherCity.map(obj => obj.icon) : ''}
-                        weather={weatherData.weather ? weatherCity.map(obj => obj.description) : ''}
-                        windSpeed={weatherData.wind.speed}
-                        pressure={weatherData.main.pressure}
-                    /> 
-                } */}
-                    <ForecastWeather/> 
-                
-                {/* <div className="container">
+      {/* <div className="container">
                     <div className="accordion">
                     <div className="accordion_forecast-weather">
                         <h3 className="accordion-forecast-weather__title">Прогноз погоды на ближайшие дни <svg className="arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg></h3>
@@ -188,8 +173,8 @@ function HomepageWeather() {
                     </div>
                 </div> 
                 </div>  */}
-            </div>
-    )
+    </div>
+  );
 }
 
-export default HomepageWeather
+export default HomepageWeather;
