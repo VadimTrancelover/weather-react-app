@@ -34,6 +34,7 @@ dd {
 body {
   
   /* min-height: 100vh; */
+  flex-direction: column;
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
   line-height: 1.5;
@@ -87,8 +88,9 @@ select {
   height: 100vh;
   flex-wrap: wrap;
   min-width: 100%;
-  justify-content: center;
-  /* align-content: space-around; */
+  justify-content: space-between;
+  align-content: space-around;
+  flex-direction: column;
   min-height: 100%;
   background: url(https://i.ibb.co/ZRDrdvs/natural-4821583.png) no-repeat;
   background-attachment: local;
@@ -268,3 +270,31 @@ search-city {
 .rotated {
   transform: rotate(90deg);
 }
+
+.search-logo {
+  display: flex;
+  flex-direction: column;
+  margin: 50px auto;
+  width: 300px;
+  height: 300px;
+}
+
+.search-logo h3 {
+  color: #fff;
+  font-weight: 700;
+  font-size: 26px;
+}
+
+@media(max-width: 769px) {
+  .search-logo {
+    width: 200px;
+    height: 200px;
+  }
+
+  .search-logo h3 {
+    color: #fff;
+    font-weight: 500;
+    font-size: 18px;
+  }
+}
+
