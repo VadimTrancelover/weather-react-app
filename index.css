@@ -254,7 +254,7 @@ search-city {
 
 .accordion-forecast-weather__content.is-open {
   max-height: 1200px;
-  transition: 0.5s ease;
+  transition: 1s ease;
 }
 
 .accordion-forecast-weather__content-inside {

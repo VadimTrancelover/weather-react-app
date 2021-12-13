@@ -1,17 +1,18 @@
 import React from "react";
-import CurrentWeather from "./CurrentWeather";
-import ForecastWeather from "./ForecastWeather";
-import WeatherLoadedBlock from "./WeatherBlock/WeatherBlock";
-import SearchLogoBlock from "./SeachLogo/SearchLogoBlock";
+
+import CurrentWeather from "../CurrentWeather";
+import ForecastWeather from "../ForecastWeather";
+import WeatherLoadedBlock from "../WeatherBlock/WeatherBlock";
+import SearchLogoBlock from "../SeachLogo/SearchLogoBlock";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+
 
 function HomepageWeather() {
   const [city, setCity] = React.useState("");
-  const [newCity, setNewCity] = React.useState(city);
   const [weatherData, setWeatherData] = React.useState('');
 
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
-  const [response, setResponse] = React.useState('')
+  const [error, setError] = React.useState(false);
 
   const onChange = (e) => {
     setCity(e.target.value);
@@ -20,10 +21,13 @@ function HomepageWeather() {
   const onSetNewCity = (city) => {
     if (city) {
       const newCity = city;
-      setNewCity(newCity);
       console.log(newCity);
     }
   };
+
+  const currentWeatherData = weatherData;
+
+
 
   const API_KEY = "3f1b2782ee3a649ad85648d928019566";
 
@@ -37,11 +41,10 @@ function HomepageWeather() {
         if (!response.ok) {
           throw new Error(
             "Request error",
-            setError("Неверное написание или город остутсвует, пожалуйста, попробуйте еще раз!"),
-            setResponse(response)
+            setError(true),
           );
         } else {
-          setError("");
+          setError(false);
           return response.json();
         }
       })
@@ -59,7 +62,7 @@ function HomepageWeather() {
     setCity("");
   };
 
-  const weatherCity = weatherData.weather;
+  const weatherCity = currentWeatherData.weather;
 
   const ViewWeatherBlock = (
 
@@ -78,24 +81,20 @@ function HomepageWeather() {
     />
   );
 
-  const errorMessage = <h3 className="error-message">{error}</h3>
 
   let messageForUser;
-  if (error) {
-    messageForUser = errorMessage;
+
+if (error) {
+    messageForUser = <ErrorMessage/>;
   } else if (loading) {
-    messageForUser = <WeatherLoadedBlock />;
+    messageForUser = <WeatherLoadedBlock/>;
   } else {
     messageForUser = ViewWeatherBlock;
   }
 
-  React.useEffect(() => [
-    console.log(response),
-
-],[response])
 
 React.useEffect(() => [
-    console.log(weatherData)
+   onHandleSetCity()
 ],[weatherData])
 
   return (
@@ -114,10 +113,11 @@ React.useEffect(() => [
         </form>
       </div>
       <div>
-          {(weatherData) ? (response.status === 404 ? errorMessage : messageForUser) : <SearchLogoBlock/>}
+          {error ? messageForUser : (weatherData ? messageForUser : <SearchLogoBlock/>)}
       </div>
       <ForecastWeather />
 
+    <>
       {/* <div className="container">
                     <div className="accordion">
                     <div className="accordion_forecast-weather">
@@ -173,6 +173,7 @@ React.useEffect(() => [
                     </div>
                 </div> 
                 </div>  */}
+              </>
     </div>
   );
 }

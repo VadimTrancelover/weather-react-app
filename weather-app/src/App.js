@@ -1,12 +1,19 @@
 import './App.css';
 import './index.css';
-import  { HomepageWeather }  from './components';
+import  { HomepageWeather, MoreInformationPage }  from './components/pages';
+
+import {Routes, Route} from 'react-router-dom'
 
 function App() {
   return (
     <div className="App">
-      <HomepageWeather/>
+      <Routes>
+        <Route exact path="/" element={<HomepageWeather/>}/>
+        <Route exact path="/moreinformation" element={<MoreInformationPage/>}/>
+      </Routes>
     </div>
+
+
   );
 }
 
