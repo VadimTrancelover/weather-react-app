@@ -1,1 +1,1 @@
-export {default as HomepageWeather} from './HomepageWeather';
+export {default as HomepageWeather} from './pages/HomepageWeather';
