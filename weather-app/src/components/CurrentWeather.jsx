@@ -1,12 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
+
 function CurrentWeather({city, country,temp, iconWeather, weather, windSpeed, pressure}) {
 
-
-    React.useEffect(() => {
-        
-    },[]);
 
     const currentTemp = Math.round(temp)
     const currentWindSpeed = Math.round((windSpeed)*10)/10;

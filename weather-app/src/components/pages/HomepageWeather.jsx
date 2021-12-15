@@ -7,9 +7,13 @@ import SearchLogoBlock from "../SeachLogo/SearchLogoBlock";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 
+let data = {};
+
+
+
 function HomepageWeather() {
   const [city, setCity] = React.useState("");
-  const [weatherData, setWeatherData] = React.useState('');
+  const [weatherData, setWeatherData] = React.useState(data);
 
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -18,12 +22,6 @@ function HomepageWeather() {
     setCity(e.target.value);
   };
 
-  const onSetNewCity = (city) => {
-    if (city) {
-      const newCity = city;
-      console.log(newCity);
-    }
-  };
 
   const currentWeatherData = weatherData;
 
@@ -57,7 +55,6 @@ function HomepageWeather() {
 
   const onHandleSetCity = (e) => {
     e.preventDefault();
-    onSetNewCity(city);
     getWeather(city);
     setCity("");
   };
@@ -93,10 +90,10 @@ if (error) {
   }
 
 
-React.useEffect(() => [
-   onHandleSetCity()
-],[weatherData])
-
+React.useEffect(() => {
+  data = weatherData
+},[])
+   
   return (
     <div className="wrapper">
       <div className="search-bar">
