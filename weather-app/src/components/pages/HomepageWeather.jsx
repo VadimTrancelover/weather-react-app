@@ -7,9 +7,13 @@ import SearchLogoBlock from "../SeachLogo/SearchLogoBlock";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 
+let data = {};
+
+
+
 function HomepageWeather() {
   const [city, setCity] = React.useState("");
-  const [weatherData, setWeatherData] = React.useState('');
+  const [weatherData, setWeatherData] = React.useState(data);
 
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -94,7 +98,6 @@ React.useEffect(() => {
   const data = () => cityWeather ? getWeather(cityWeather) : '';
   data();
 }, [cityName])
-
 
   return (
     <div className="wrapper">
