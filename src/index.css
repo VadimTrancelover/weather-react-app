@@ -339,4 +339,5 @@ search-city {
 .detail-temperature .temperature {
   color: #ffff;
   font-size: 60px;
+  background-color: gray;
 }
