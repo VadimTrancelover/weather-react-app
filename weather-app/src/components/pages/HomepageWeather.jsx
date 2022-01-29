@@ -13,7 +13,7 @@ let data = {};
 
 function HomepageWeather() {
   const [city, setCity] = React.useState("");
-  const [weatherData, setWeatherData] = React.useState(data);
+  const [weatherData, setWeatherData] = React.useState('');
 
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -97,6 +97,7 @@ React.useEffect(() => {
   const cityWeather = localStorage.getItem(cityName)
   const data = () => cityWeather ? getWeather(cityWeather) : '';
   data();
+  console.log(weatherData)
 }, [cityName])
 
   return (

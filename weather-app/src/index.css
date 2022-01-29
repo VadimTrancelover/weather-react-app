@@ -86,11 +86,13 @@ select {
 
 .wrapper {
   height: 100vh;
+  /* display: flex; */
   flex-wrap: wrap;
+  flex-direction: column;
   min-width: 100%;
   justify-content: space-between;
   align-content: space-around;
-  flex-direction: column;
+  
   min-height: 100%;
   background: url(https://i.ibb.co/ZRDrdvs/natural-4821583.png) no-repeat;
   background-attachment: local;
@@ -108,6 +110,7 @@ search-city {
   justify-content: center;
   width: 85%;
   margin: 0px auto;
+  margin-bottom: 10%;
 }
 
 .input-search {
@@ -244,6 +247,9 @@ search-city {
   .accordion-forecast-weather__title {
     font-size: 18px;
   }
+  .search-bar {
+    margin-bottom: 10%;
+  }
 }
 
 .accordion-forecast-weather__title:hover {
@@ -306,6 +312,11 @@ search-city {
     font-weight: 500;
     font-size: 18px;
   }
+
+  .search-bar {
+    margin-bottom: 45%;
+  }
+  
 }
 
 .error-message {
@@ -321,4 +332,80 @@ search-city {
     font-weight: 700;
     font-size: 18px;
   }
+}
+
+
+/* детальная информация о погоде */
+.wrapper-detail-information {
+
+  min-width: 100%;
+  min-height: 100%;
+  background: url(https://i.ibb.co/ZRDrdvs/natural-4821583.png) no-repeat;
+  background-attachment: local;
+  /* background-position: center center ; */
+  background-size: cover;
+  
+}
+
+.detail-information {
+  display: flex;
+  height: 100vh;
+  min-height: 100%;
+  /* padding: 200px ; */
+  justify-content: center;
+  align-items: center;
+}
+
+.left-column_information {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 400px;
+  margin-right: 50px;
+  border-right: 1px solid white;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.weather-icon img{
+  display: block;
+  width: 300px;
+  height: 300px;
+}
+
+.detail-temperature .temperature {
+  color: #ffff;
+  font-size: 60px;
+}
+
+.link-to-home {
+  display: block;
+  margin-top: -24px;
+}
+
+.link-to-home-title {
+  color: white;
+  text-decoration: none;
+}
+
+.right-column_information {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.information-parametr {
+  display: flex;
+  justify-content: center;
+  align-items:center;
+}
+
+
+.information-parametr p {
+  display: inline-block;
+  margin-left: 10px;
+  font-weight: 500;
+  line-height: normal;
 }
