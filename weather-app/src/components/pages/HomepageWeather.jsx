@@ -6,8 +6,8 @@ import WeatherLoadedBlock from "../WeatherBlock/WeatherBlock";
 import SearchLogoBlock from "../SeachLogo/SearchLogoBlock";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
-
-let data = {};
+import { SearchWeather, fetchWeather} from '../../redux/actions/searchActions';
+import {useDispatch, useSelector} from 'react-redux';
 
 
 
@@ -17,15 +17,18 @@ function HomepageWeather() {
 
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(false);
-  const [cityName, setCityName] = React.useState('');
+
+  const dispatch = useDispatch();
+  const text = useSelector(({search}) => search.text);
 
   const onChange = (e) => {
     setCity(e.target.value);
+    // dispatch(SearchWeather(e.target.value))
   };
 
 
   const handleToSubmit = () => {
-    localStorage.setItem(cityName, city)
+    localStorage.setItem(1, city);
   }
 
   const API_KEY = "3f1b2782ee3a649ad85648d928019566";
@@ -56,10 +59,13 @@ function HomepageWeather() {
 
   const onHandleSetCity = (e) => {
     e.preventDefault();
-    setCityName(city)
+    dispatch(SearchWeather(city))
     getWeather(city);
     setCity("");
     handleToSubmit();
+    dispatch(fetchWeather(text))
+    console.log(city)
+    console.log(weatherData)
   };
 
   const weatherCity = weatherData.weather;
@@ -94,11 +100,12 @@ if (error) {
 
 
 React.useEffect(() => {
-  const cityWeather = localStorage.getItem(cityName)
+  const cityWeather = localStorage.getItem(1)
   const data = () => cityWeather ? getWeather(cityWeather) : '';
   data();
-  console.log(weatherData)
-}, [cityName])
+  console.log(cityWeather)
+  console.log(text)
+}, [text])
 
   return (
     <div className="wrapper">
