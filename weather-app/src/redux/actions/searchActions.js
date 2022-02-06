@@ -17,5 +17,22 @@ export const fetchWeather = (text) => (dispatch) =>
               payload: responce.data
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          console.log(err)
+          dispatch({
+            type: 'ERROR',
+          })
+        })
   }
+
+export const setLoading = () => (
+  {
+    type: 'LOADING'
+  }
+)
+
+export const setError = () => (
+  {
+    type: 'ERROR'
+  }
+)

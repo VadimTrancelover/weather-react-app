@@ -1,29 +1,29 @@
 import React from "react";
 
+//Components
 import CurrentWeather from "../CurrentWeather";
 import ForecastWeather from "../ForecastWeather";
 import WeatherLoadedBlock from "../WeatherBlock/WeatherBlock";
 import SearchLogoBlock from "../SeachLogo/SearchLogoBlock";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
-import { SearchWeather, fetchWeather} from '../../redux/actions/searchActions';
+//Redux
+import { SearchWeather, fetchWeather, setLoading} from '../../redux/actions/searchActions';
 import {useDispatch, useSelector} from 'react-redux';
 
 
 
 function HomepageWeather() {
   const [city, setCity] = React.useState("");
-  const [weatherData, setWeatherData] = React.useState('');
-
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState(false);
-
   const dispatch = useDispatch();
   const text = useSelector(({search}) => search.text);
+  const weather = useSelector(({search}) => search.weatherData);
+  const loading = useSelector(({search}) => search.loading);
+  const error = useSelector(({search}) => search.error);
 
   const onChange = (e) => {
     setCity(e.target.value);
-    // dispatch(SearchWeather(e.target.value))
+    dispatch(SearchWeather(e.target.value))
   };
 
 
@@ -31,59 +31,31 @@ function HomepageWeather() {
     localStorage.setItem(1, city);
   }
 
-  const API_KEY = "3f1b2782ee3a649ad85648d928019566";
-
-  const getWeather = async (city) => {
-    setLoading(true);
-
-    await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=ru&appid=${API_KEY}`
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            "Request error",
-            setError(true),
-          );
-        } else {
-          setError(false);
-          return response.json();
-        }
-      })
-      .then((data) => setWeatherData(data))
-      .catch((err) => {
-        console.error(err);
-      });
-    setLoading(false);
-  };
 
   const onHandleSetCity = (e) => {
     e.preventDefault();
-    dispatch(SearchWeather(city))
-    getWeather(city);
+    dispatch(fetchWeather(text));
+    dispatch(setLoading());
     setCity("");
     handleToSubmit();
-    dispatch(fetchWeather(text))
-    console.log(city)
-    console.log(weatherData)
   };
 
-  const weatherCity = weatherData.weather;
+  const weatherCity = weather.weather;
 
   const ViewWeatherBlock = (
 
     <CurrentWeather
-      city={weatherData ? weatherData.name : ""}
-      country={weatherData ? weatherData.sys.country : ""}
-      temp={weatherData ? weatherData.main.temp : ""}
+      city={weather ? weather.name : ""}
+      country={weather ? weather.sys.country : ""}
+      temp={weather ? weather.main.temp : ""}
       iconWeather={
-        weatherData.weather ? weatherCity.map((obj) => obj.icon) : ""
+        weather.weather ? weatherCity.map((obj) => obj.icon) : ""
       }
       weather={
-        weatherData.weather ? weatherCity.map((obj) => obj.description) : ""
+        weather.weather ? weatherCity.map((obj) => obj.description) : ""
       }
-      windSpeed={weatherData ? weatherData.wind.speed : ""}
-      pressure={weatherData ? weatherData.main.pressure : ""}
+      windSpeed={weather ? weather.wind.speed : ""}
+      pressure={weather ? weather.main.pressure : ""}
     />
   );
 
@@ -99,13 +71,14 @@ if (error) {
   }
 
 
-React.useEffect(() => {
   const cityWeather = localStorage.getItem(1)
-  const data = () => cityWeather ? getWeather(cityWeather) : '';
+React.useEffect(() => {
+
+  const data = () => cityWeather ? dispatch(fetchWeather(cityWeather)) : '';
   data();
-  console.log(cityWeather)
-  console.log(text)
-}, [text])
+  console.log(weather)
+}, [cityWeather])
+
 
   return (
     <div className="wrapper">
@@ -123,7 +96,7 @@ React.useEffect(() => {
         </form>
       </div>
       <div>
-          {error ? messageForUser : (weatherData ? messageForUser : <SearchLogoBlock/>)}
+          {error ? messageForUser : (weather ? messageForUser : <SearchLogoBlock/>)}
       </div>
       <ForecastWeather />
 
