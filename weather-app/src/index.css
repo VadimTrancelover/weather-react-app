@@ -344,6 +344,7 @@ search-city {
   background-attachment: local;
   /* background-position: center center ; */
   background-size: cover;
+  color: #fff;
   
 }
 
@@ -408,4 +409,31 @@ search-city {
   margin-left: 10px;
   font-weight: 500;
   line-height: normal;
+}
+
+
+
+
+@media (max-width: 730px) {
+
+  .left-column_information {
+    margin-right: 0px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    border-right: none;
+  }
+    
+  .detail-information {
+    flex-direction: column;
+  }
+
+  .weather-icon img{
+    /* margin-top: -50px; */
+    width: 300px;
+    height: 300px;
+  }
+/* 
+  .detail-temperature .temperature {
+    margin-bottom: -50px;
+  } */
 }

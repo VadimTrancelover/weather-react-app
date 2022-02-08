@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import {fetchWeather} from '../../redux/actions/searchActions';
 
 function MoreInformationPage() {
 
+    const dispatch = useDispatch();
     const weather = useSelector(({search}) => search.weatherData);
+    const text =useSelector(({search}) => search.text);
 
 
     const clouds = weather ? weather.clouds.all : '';
@@ -20,44 +23,47 @@ function MoreInformationPage() {
     const iconWeather = weather ? weather.weather.map((obj) => obj.icon) : '';
     const sunrise = weather ? weather.sys.sunrise : '';
     const sunset = weather ? weather.sys.sunset : '';
+    const timezone = weather ? weather.timezone : '';
 
     const currentWindSpeed = Math.round((windSpeed)*10)/10;
 
+    function timeConverter(UNIX_timestamp) { 
+        let a = new Date(UNIX_timestamp * 1000);
+        let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        let year = a.getUTCFullYear();
+        let month = months[a.getUTCMonth()];
+        let date = a.getUTCDate();
+        let hour = a.getUTCHours();
+        let min = a.getUTCMinutes(); 
+        let sec = a.getUTCSeconds();
 
-    // function timeConverter(UNIX_timestamp){
-    //     let a = new Date(UNIX_timestamp * 1000);
-    //     let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    //     let year = a.getFullYear();
-    //     let month = months[a.getMonth()];
-    //     let date = a.getDate();
-    //     let hour = a.getHours();
-    //     let min = a.getMinutes(); 
-    //     let sec = a.getSeconds();
+        let mins = min < 10 ? '0' + min : min;
+        let hours = hour < 10 ? '0' + hour : hour;
 
-    //     function mins(int) {
-    //         if (min.length < 2) {
-    //             min = '0' + int
-    //            } else {
-    //                min = int
-    //            }
-    //         return min;   
-    //     }
-        
-        
-    //     //const time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-    //     let timeHoursMin = hour + ':' + mins(min) + ':' + sec;
-    //     console.log(min.length)
-    //     return timeHoursMin;
-    //   }
+        const timeShift = (UNIX_timeshift) => {
+            let a = new Date(UNIX_timeshift * 60);
+            let hourShift = a.getHours();
     
-    // React.useEffect(() => {
-    //     console.log(timeConverter(sunrise))
-    // },[])
+            return hourShift;
+        }
+        
+        let hourTimeShift = (+hours) + (+timeShift(timezone));
+        
+        console.log(hourTimeShift)
+        //const time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+        let shiftTimeHoursMin = hourTimeShift + ':' + mins + ':' + sec;
+        console.log(shiftTimeHoursMin)
+        return shiftTimeHoursMin;
+      }
+    
 
     const tempRound = (temp) => {
-        return Math.round((temp)*10)/10
+        return Math.round(temp)
     }
 
+    React.useEffect(() => {
+        dispatch(fetchWeather(text))
+    },[text])
 
     return (
         <div className="wrapper-detail-information">
@@ -81,11 +87,11 @@ function MoreInformationPage() {
                     </div>
                     <div className="information-parametr">
                         <h3>Влажность:</h3>
-                        <p>{humidity}</p>
+                        <p>{humidity} %</p>
                     </div>
                     <div className="information-parametr">
                         <h3>Давление:</h3>
-                        <p>{pressure}</p>
+                        <p>{pressure} mbar</p>
                     </div>
                     <div className="information-parametr">
                         <h3>Минимальная температура:</h3>
@@ -97,15 +103,11 @@ function MoreInformationPage() {
                     </div>
                     <div className="information-parametr">
                         <h3>Восход в:</h3>
-                        <p>{sunrise}</p>
+                        <p>{timeConverter(sunrise, timezone)}</p>
                     </div>
                     <div className="information-parametr">
                         <h3>Закат в:</h3>
-                        <p>{sunset}</p>
-                    </div>
-                    <div className="information-parametr">
-                        <h3>Временной пояс:</h3>
-                        <p>100 м/с</p>
+                        <p>{timeConverter(sunset, timezone)}</p>
                     </div>
                     <div className="information-parametr">
                         <h3>Видимость:</h3>
