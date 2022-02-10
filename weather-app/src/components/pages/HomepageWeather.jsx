@@ -8,7 +8,7 @@ import SearchLogoBlock from "../SeachLogo/SearchLogoBlock";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 //Redux
-import { SearchWeather, fetchWeather, setLoading} from '../../redux/actions/searchActions';
+import { SearchWeather, fetchWeather, setLoading, fetchForecast} from '../../redux/actions/searchActions';
 import {useDispatch, useSelector} from 'react-redux';
 
 
@@ -20,6 +20,7 @@ function HomepageWeather() {
   const weather = useSelector(({search}) => search.weatherData);
   const loading = useSelector(({search}) => search.loading);
   const error = useSelector(({search}) => search.error);
+  const weatherForecast = useSelector(({search}) => search.forecastWeatherData);
 
   const onChange = (e) => {
     setCity(e.target.value);
@@ -35,6 +36,7 @@ function HomepageWeather() {
   const onHandleSetCity = (e) => {
     e.preventDefault();
     dispatch(fetchWeather(text));
+    dispatch(fetchForecast(text))
     dispatch(setLoading());
     setCity("");
     handleToSubmit();
@@ -72,12 +74,25 @@ if (error) {
 
 
   const cityWeather = localStorage.getItem(1)
-React.useEffect(() => {
 
+
+  let forecastDays = weatherForecast.list;
+  let filtersDays = '';
+
+  filtersDays = weatherForecast ? forecastDays.filter((day) => day.dt_txt.match(/\b12:00:00\b/)) : 'Ты неправильно написал';
+
+
+React.useEffect(() => {
   const data = () => cityWeather ? dispatch(fetchWeather(cityWeather)) : '';
   data();
   console.log(weather)
+  console.log(forecastDays)
+  console.log('отфильтрованный массив',filtersDays)
 }, [cityWeather])
+
+
+
+
 
 
   return (
@@ -99,7 +114,6 @@ React.useEffect(() => {
           {error ? messageForUser : (weather ? messageForUser : <SearchLogoBlock/>)}
       </div>
       <ForecastWeather />
-
     <>
       {/* <div className="container">
                     <div className="accordion">

@@ -136,7 +136,7 @@ search-city {
   color: white;
   display: flex;
   max-width: 225px;
-  margin: 50px auto 100px;
+  margin: 50px auto 37px;
   align-items: center;
   flex-direction: column;
   padding: 10px 10px 10px 10px;
@@ -176,7 +176,7 @@ search-city {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  overflow: auto;
+  /* overflow: auto; */
   white-space: nowrap;
   /* min-width: 1000px; */
 }
@@ -204,6 +204,15 @@ search-city {
   margin-top: -10px;
   font-weight: 700;
   font-size: 25px;
+}
+
+@media (max-width: 730px) {
+  .forecast-weather {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 390px;
+    flex-wrap: nowrap;
+  }
 }
 
 /* аккордион с прогнозом погоды */
@@ -248,7 +257,7 @@ search-city {
     font-size: 18px;
   }
   .search-bar {
-    margin-bottom: 10%;
+    margin-bottom: 5%;
   }
 }
 
@@ -378,6 +387,7 @@ search-city {
 .detail-temperature .temperature {
   color: #ffff;
   font-size: 60px;
+  line-height: 1.1em;
 }
 
 .link-to-home {
@@ -421,19 +431,21 @@ search-city {
     margin-top: -10px;
     margin-bottom: 20px;
     border-right: none;
+    height: 140px;
   }
     
   .detail-information {
     flex-direction: column;
+    justify-content: space-around;
   }
 
   .weather-icon img{
     /* margin-top: -50px; */
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
   }
-/* 
+
   .detail-temperature .temperature {
-    margin-bottom: -50px;
-  } */
+    line-height: 0.7em;
+  }
 }

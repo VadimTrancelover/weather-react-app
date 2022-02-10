@@ -49,10 +49,8 @@ function MoreInformationPage() {
         
         let hourTimeShift = (+hours) + (+timeShift(timezone));
         
-        console.log(hourTimeShift)
         //const time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
         let shiftTimeHoursMin = hourTimeShift + ':' + mins + ':' + sec;
-        console.log(shiftTimeHoursMin)
         return shiftTimeHoursMin;
       }
     

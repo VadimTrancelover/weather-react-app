@@ -25,6 +25,23 @@ export const fetchWeather = (text) => (dispatch) =>
         })
   }
 
+  export const fetchForecast = (text) => (dispatch) => 
+  {
+    axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${text}&exclude=daily&units=metric&lang=ru&appid=${API_Key}`)
+        .then(responce => {
+            dispatch({
+              type:'FETCH_FORECAST',
+              payload: responce.data
+            })
+        })
+        .catch(err => {
+          console.log(err)
+          dispatch({
+            type: 'ERROR',
+          })
+        })
+  }
+
 export const setLoading = () => (
   {
     type: 'LOADING'
