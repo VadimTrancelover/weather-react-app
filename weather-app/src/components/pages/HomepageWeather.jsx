@@ -91,10 +91,6 @@ React.useEffect(() => {
 }, [cityWeather])
 
 
-
-
-
-
   return (
     <div className="wrapper">
       <div className="search-bar">
