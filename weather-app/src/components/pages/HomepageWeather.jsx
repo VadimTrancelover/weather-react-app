@@ -76,18 +76,15 @@ if (error) {
   const cityWeather = localStorage.getItem(1)
 
 
-  let forecastDays = weatherForecast.list;
-  let filtersDays = '';
-
-  filtersDays = weatherForecast ? forecastDays.filter((day) => day.dt_txt.match(/\b12:00:00\b/)) : 'Ты неправильно написал';
+  let forecastDays = '';
+  forecastDays = weatherForecast && weatherForecast.length > 0 ? weatherForecast.map((day, index) => <ForecastWeather key={index} day={day} />) : '';
 
 
 React.useEffect(() => {
-  const data = () => cityWeather ? dispatch(fetchWeather(cityWeather)) : '';
-  data();
-  console.log(weather)
-  console.log(forecastDays)
-  console.log('отфильтрованный массив',filtersDays)
+  const dataFetch = (action) => 
+  cityWeather ? dispatch(action(cityWeather)) : '';
+  dataFetch(fetchWeather);
+  dataFetch(fetchForecast);
 }, [cityWeather])
 
 
@@ -109,7 +106,10 @@ React.useEffect(() => {
       <div>
           {error ? messageForUser : (weather ? messageForUser : <SearchLogoBlock/>)}
       </div>
-      <ForecastWeather />
+      <div className="forecast-weather">
+          {forecastDays}
+      </div>
+      
     <>
       {/* <div className="container">
                     <div className="accordion">

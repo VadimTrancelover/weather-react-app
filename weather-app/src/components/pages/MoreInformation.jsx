@@ -29,7 +29,7 @@ function MoreInformationPage() {
 
     function timeConverter(UNIX_timestamp) { 
         let a = new Date(UNIX_timestamp * 1000);
-        let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        let months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
         let year = a.getUTCFullYear();
         let month = months[a.getUTCMonth()];
         let date = a.getUTCDate();

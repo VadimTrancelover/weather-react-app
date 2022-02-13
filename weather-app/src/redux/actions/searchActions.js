@@ -31,7 +31,7 @@ export const fetchWeather = (text) => (dispatch) =>
         .then(responce => {
             dispatch({
               type:'FETCH_FORECAST',
-              payload: responce.data
+              payload: responce.data.list.filter((day) => day.dt_txt.match(/\b12:00:00\b/))
             })
         })
         .catch(err => {

@@ -101,6 +101,13 @@ select {
   
 }
 
+/* @media(max-width: 730px) {
+  .wrapper {
+    max-width: auto;
+    overflow: hidden;
+  }
+} */
+
 search-city {
   z-index: 10;
 }
@@ -170,6 +177,37 @@ search-city {
   text-decoration: none;
 }
 
+@media(max-height: 740px) {
+  .current-weather {
+    max-width: 200px;
+  }
+
+  .current-weather h1 {
+    font-weight: 700;
+    font-size: 35px;
+    margin-top: -20px;
+  }
+  
+  .current-weather h4 {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .current-weather h5 {
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .current-weather p {
+    font-size: 12px;
+  }
+  
+  .current-weather-details-link {
+    font-size: 12px;
+  }
+}
+
 /* Прогноз погоды */
 
 .forecast-weather {
@@ -183,8 +221,11 @@ search-city {
 
 .forecast-day-weather {
   display: flex;
+  width: 150px;
+  height: 200px;
   color: white;
   align-items: center;
+
   flex-direction: column;
   margin: 20px 20px 20px 20px;
   padding: 10px 10px 10px 10px;
@@ -206,17 +247,42 @@ search-city {
   font-size: 25px;
 }
 
+.forecast-day-weather h4 {
+  display: block;
+  white-space: pre-wrap;
+  height: 50px;
+  text-align: center;
+}
+
 @media (max-width: 730px) {
   .forecast-weather {
-    overflow-x: scroll;
-    overflow-y: hidden;
-    width: 390px;
+    overflow: scroll;
+    width: 360px;
     flex-wrap: nowrap;
+    justify-content: unset;
+    padding-left: 30px
+  }
+  .forecast-day-weather {
+    width: 80px;
+    height: auto;
+  }
+  .forecast-day-weather h4 {
+    font-size: 10px;
   }
 }
 
-/* аккордион с прогнозом погоды */
 
+
+@media(min-height: 740px) {
+  .forecast-weather {
+    width: 360px;
+    margin-top: 40%;
+  }
+}
+
+
+/* аккордион с прогнозом погоды */
+/* 
 .container {
   display: flex;
   align-items: center;
@@ -289,12 +355,12 @@ search-city {
 
 .accordion-forecast-weather__content-inside {
   /* min-width: 1000px; */
-  padding: 15px 20px;
+  /* padding: 15px 20px;
 }
 
 .rotated {
   transform: rotate(90deg);
-}
+}  */
 
 .search-logo {
   display: flex;
@@ -323,9 +389,15 @@ search-city {
   }
 
   .search-bar {
-    margin-bottom: 45%;
+    margin-bottom: 22%;
   }
   
+}
+
+@media(max-height: 740px) {
+  .search-bar {
+    margin-bottom: 13%;
+  }
 }
 
 .error-message {
