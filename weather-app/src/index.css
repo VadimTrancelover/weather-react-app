@@ -180,6 +180,7 @@ search-city {
 @media(max-height: 740px) {
   .current-weather {
     max-width: 200px;
+    /* margin: 0px auto 0px; */
   }
 
   .current-weather h1 {
@@ -208,6 +209,7 @@ search-city {
   }
 }
 
+
 /* Прогноз погоды */
 
 .forecast-weather {
@@ -231,7 +233,6 @@ search-city {
   padding: 10px 10px 10px 10px;
   border-radius: 20px;
   background-color: rgba(5, 5, 28, 0.55);
-  cursor: pointer;
 }
 
 .forecast-day-weather img {
@@ -389,14 +390,25 @@ search-city {
   }
 
   .search-bar {
-    margin-bottom: 22%;
+    margin-bottom: 20%;
   }
   
 }
 
-@media(max-height: 740px) {
+/* @media(max-height: 740px) {
   .search-bar {
     margin-bottom: 13%;
+  }
+} */
+
+@media(min-width: 1240px) {
+  .search-bar {
+    margin-bottom: 0px;
+  }
+
+  .current-weather {
+    margin-top: 20px;
+    margin-bottom: 0px;
   }
 }
 

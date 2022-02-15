@@ -36,7 +36,7 @@ function HomepageWeather() {
   const onHandleSetCity = (e) => {
     e.preventDefault();
     dispatch(fetchWeather(text));
-    dispatch(fetchForecast(text))
+    dispatch(fetchForecast(text));
     dispatch(setLoading());
     setCity("");
     handleToSubmit();
@@ -62,30 +62,31 @@ function HomepageWeather() {
   );
 
 
-  let messageForUser;
-
-if (error) {
-    messageForUser = <ErrorMessage/>;
-  } else if (loading) {
-    messageForUser = <WeatherLoadedBlock/>;
-  } else {
-    messageForUser = ViewWeatherBlock;
-  }
-
-
-  const cityWeather = localStorage.getItem(1)
-
-
   let forecastDays = '';
   forecastDays = weatherForecast && weatherForecast.length > 0 ? weatherForecast.map((day, index) => <ForecastWeather key={index} day={day} />) : '';
 
+  if (error) {
+    forecastDays = '';
+  } 
+
+  let messageForUser;
+
+  if (error) {
+      messageForUser = <ErrorMessage/>;
+    } else if (loading) {
+      messageForUser = <WeatherLoadedBlock/>;
+    } else {
+      messageForUser = ViewWeatherBlock;
+    }
+
+    const cityWeather = localStorage.getItem(1)
 
 React.useEffect(() => {
   const dataFetch = (action) => 
   cityWeather ? dispatch(action(cityWeather)) : '';
   dataFetch(fetchWeather);
   dataFetch(fetchForecast);
-}, [cityWeather])
+}, [])
 
 
   return (

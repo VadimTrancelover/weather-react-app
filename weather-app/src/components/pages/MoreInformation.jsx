@@ -37,8 +37,12 @@ function MoreInformationPage() {
         let min = a.getUTCMinutes(); 
         let sec = a.getUTCSeconds();
 
-        let mins = min < 10 ? '0' + min : min;
-        let hours = hour < 10 ? '0' + hour : hour;
+
+        const getZero = (time) => {
+           return time < 10 ? '0' + time : time; 
+        }
+        
+        
 
         const timeShift = (UNIX_timeshift) => {
             let a = new Date(UNIX_timeshift * 60);
@@ -47,10 +51,10 @@ function MoreInformationPage() {
             return hourShift;
         }
         
-        let hourTimeShift = (+hours) + (+timeShift(timezone));
+        let hourTimeShift = (+getZero(hour)) + (+timeShift(timezone));
         
         //const time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-        let shiftTimeHoursMin = hourTimeShift + ':' + mins + ':' + sec;
+        let shiftTimeHoursMin = hourTimeShift + ':' + getZero(min) + ':' + getZero(sec);
         return shiftTimeHoursMin;
       }
     
