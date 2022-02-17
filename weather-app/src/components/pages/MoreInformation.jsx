@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {fetchWeather} from '../../redux/actions/searchActions';
+import classNames from "classnames";
 
 function MoreInformationPage() {
 
@@ -68,7 +69,10 @@ function MoreInformationPage() {
     },[text])
 
     return (
-        <div className="wrapper-detail-information">
+        <div className={classNames({
+            wrapper_cold_detail_information: temp,
+            // wrapper_warm_detail_information: temp > 1,
+        })}>
             <div className="detail-information">
                 <div className="left-column_information">
                     <div className="weather-icon">

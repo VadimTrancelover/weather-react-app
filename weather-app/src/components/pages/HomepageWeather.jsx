@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 
 //Components
 import CurrentWeather from "../CurrentWeather";
@@ -21,6 +22,7 @@ function HomepageWeather() {
   const loading = useSelector(({search}) => search.loading);
   const error = useSelector(({search}) => search.error);
   const weatherForecast = useSelector(({search}) => search.forecastWeatherData);
+  const temp= weather ? weather.main.temp : "";
 
   const onChange = (e) => {
     setCity(e.target.value);
@@ -86,11 +88,15 @@ React.useEffect(() => {
   cityWeather ? dispatch(action(cityWeather)) : '';
   dataFetch(fetchWeather);
   dataFetch(fetchForecast);
-}, [])
+  console.log(temp)
+}, [text])
 
 
   return (
-    <div className="wrapper">
+    <div className={classNames({
+      wrapper_cold: temp,
+      // wrapper_warm: temp > 1,
+  })}>
       <div className="search-bar">
         <form id="search-city" onSubmit={onHandleSetCity}>
           <input
